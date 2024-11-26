@@ -1,0 +1,6 @@
+#!/bin/bash
+python3 tools/imagegen.py
+rgbasm -ogame.obj src/main.asm
+rgblink -mgame.map -ngame.sym -ogame.gb game.obj
+rgbfix -p0 -v game.gb
+rm -rf game.map game.obj game.sym

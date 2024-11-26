@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#$1 == threads
+
+# Debian and derivatives (apt)
+if cat /etc/os-release | grep -E 'ID=debian|ID_LIKE=(.*)debian' &> /dev/null; then
+    supported=true
+    echo "Installing packages for Debian or derivative (apt)"
+    sudo apt update && sudo apt upgrade
+    sudo apt-get install make gcc git
+    sudo apt install make gcc git bison pkg-config libpng-dev
+    #specific releases, as retrieving rgbds main can cause problems if not unchecked (deprecations and whatnot)
+    cd ..
+    #download release zip
+    rm -rf rgbds && wget https://github.com/gbdev/rgbds/releases/download/v0.7.0/rgbds-0.7.0.tar.gz
+    #clean up
+    tar -xvzf rgbds-0.7.0.tar.gz && rm -rf rgbds-0.7.0.tar.gz
+    cd - && cd ../rgbds
+    #default to one thread if no arg
+    make -j${1:-1} && sudo make install && cd -
+fi

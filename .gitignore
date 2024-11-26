@@ -1,0 +1,4 @@
+
+*.gb
+build_artifacts/
+tools/outputs/
